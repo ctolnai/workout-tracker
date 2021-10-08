@@ -1,7 +1,10 @@
 const express = require("express");
-const mongojs = require("mongojs");
 const logger = require("morgan");
-const path = require("path");
+const mongoose = require("mongoose");
+
+const PORT = process.env.PORT || 3000;
+
+const db = require("./models");
 
 const app = express();
 
@@ -12,19 +15,20 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-const databaseUrl = "notetaker";
-const collections = ["notes"];
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populate", { useNewUrlParser: true });
 
-const db = mongojs(databaseUrl, collections);
 
-db.on("error", error => {
-  console.log("Database Error:", error);
+db.Workout.create({ name: "Workout" })
+    .then(dbWorkout => {
+        console.log(dbWorkout);
+    })
+    .catch(({ message }) => {
+        console.log(message);
+    });
+
+
+
+
+app.listen(PORT, () => {
+    console.log(`App running on port ${PORT}!`);
 });
-
-
-
-
-app.listen(3000, () => {
-    console.log("App running on port 3000!");
-  });
-  
