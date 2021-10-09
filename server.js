@@ -26,6 +26,12 @@ db.Workout.create({ name: "Workout" })
         console.log(message);
     });
 
+app.get('/exercise', (req, res) => {
+    res.render('exercise')
+      .catch(err => {
+        res.json(err);
+      });
+  });
 
 
 
